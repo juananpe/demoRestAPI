@@ -12,9 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Manager {
@@ -109,6 +107,10 @@ public class Manager {
   }
 
   public List<Match> getMatches() {
+   return getMatches(null);
+  }
+
+  public List<Match> getMatches(MatchDay matchDay) {
     if (matches == null) {
       Gson gson = new Gson();
 
@@ -128,12 +130,28 @@ public class Manager {
       }.getType();
       matches = gson.fromJson((jsonObject.get("matches")), matchListType);
     }
+    if (matchDay!=null) {
+      return matches.stream().filter(m -> matchDay.getMatchDay() == m.getMatchday()).collect(Collectors.toList());
+    }
 
     return matches;
   }
 
-  public List<String> getMatchDates() {
+  public List<MatchDay> getMatchDates() {
     List<Match> listMatches = getMatches();
-    return listMatches.stream().map(match -> match.getUtcDate().split("T")[0]).distinct().collect(Collectors.toList());
+
+    List<MatchDay> result = new ArrayList<>();
+    for (Match match :
+        listMatches) {
+        result.add( new MatchDay(match.getUtcDate(),match.getMatchday()));
+    }
+
+    // remove date-duplicates (without taking into account the match hour)
+    Set<String> nameSet = new HashSet<>();
+    List<MatchDay> matchDaysDistinctByName = result.stream()
+        .filter(e -> nameSet.add(e.getUtcDate().toInstant().toString().split("T")[0]))
+        .collect(Collectors.toList());
+
+    return matchDaysDistinctByName;
   }
 }

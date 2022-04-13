@@ -1,28 +1,32 @@
 package eus.ehu.demoapi;
 
 
+import java.util.Date;
+
 public class Match {
 
-
-  String utcDate;
+  Date utcDate;
   String status;
 
   Team homeTeam;
   Team awayTeam;
   Score score;
 
+  Integer matchday;
+
   @Override
   public String toString() {
     return "Match{" +
-        "utcDate='" + utcDate + '\'' +
+        "utcDate=" + utcDate +
         ", status='" + status + '\'' +
         ", homeTeam=" + homeTeam +
         ", awayTeam=" + awayTeam +
         ", score=" + score +
+        ", matchDay=" + matchday +
         '}';
   }
 
-  public String getUtcDate() {
+  public Date getUtcDate() {
     return utcDate;
   }
 
@@ -40,6 +44,10 @@ public class Match {
 
   public String getScore() {
     return score.fullTime.homeTeam + ":" + score.fullTime.awayTeam;
+  }
+
+  public Integer getMatchday() {
+    return matchday;
   }
 
   class Team {
