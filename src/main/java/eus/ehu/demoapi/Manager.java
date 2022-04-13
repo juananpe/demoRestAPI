@@ -19,6 +19,12 @@ public class Manager {
 
   public static Manager manager;
 
+  private HashMap<String, String> teamNames = this.loadTeamNames();
+
+  public String getShortName(String longName){
+    return teamNames.get(longName);
+  }
+
   private List<Match> matches;
 
   public static Manager get() {

@@ -8,6 +8,18 @@ public class Match {
   Date utcDate;
   String status;
 
+  public void setHomeTeam(String homeTeam) {
+    this.homeTeam = new Team(homeTeam);
+  }
+
+  public void setAwayTeam(String awayTeam) {
+    this.awayTeam = new Team(awayTeam);
+  }
+
+  public void setScore(String score) {
+    this.score = new Score(score);
+  }
+
   Team homeTeam;
   Team awayTeam;
   Score score;
@@ -35,15 +47,25 @@ public class Match {
   }
 
   public String getHomeTeam() {
-    return homeTeam.name;
+    if (homeTeam.shortName==null) {
+      homeTeam.shortName = Manager.get().getShortName(homeTeam.name);
+    }
+    return homeTeam.shortName;
   }
 
   public String getAwayTeam() {
-    return awayTeam.name;
+    if (awayTeam.shortName==null) {
+      awayTeam.shortName = Manager.get().getShortName(awayTeam.name);
+    }
+
+    return awayTeam.shortName;
   }
 
   public String getScore() {
-    return score.fullTime.homeTeam + ":" + score.fullTime.awayTeam;
+    if (score.fullTime.homeTeam != null)
+      return score.fullTime.homeTeam + " - " + score.fullTime.awayTeam;
+    else
+      return "-";
   }
 
   public Integer getMatchday() {
@@ -52,6 +74,12 @@ public class Match {
 
   class Team {
     String name;
+    String shortName;
+
+    public Team(String name) {
+      this.name = name;
+      this.shortName = Manager.get().getShortName(name);
+    }
 
     @Override
     public String toString() {
@@ -64,6 +92,11 @@ public class Match {
     Integer homeTeam;
     Integer awayTeam;
 
+    ScoreDetails(String score){
+      homeTeam = Integer.parseInt(score.split("-")[0]);
+      awayTeam = Integer.parseInt(score.split("-")[1]);
+    }
+
     @Override
     public String toString() {
       return "ScoreDetails{" +
@@ -75,6 +108,10 @@ public class Match {
   }
   class Score {
     ScoreDetails fullTime;
+
+    Score(String score){
+      fullTime = new ScoreDetails(score);
+    }
 
     @Override
     public String toString() {
