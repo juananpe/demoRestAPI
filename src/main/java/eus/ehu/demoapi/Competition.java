@@ -8,21 +8,6 @@ public class Competition {
   String emblemUrl;
   String plan;
 
-  @Override
-  public String toString() {
-    return "Competition{" +
-        "id=" + id +
-        ", area=" + area +
-        ", name='" + name + '\'' +
-        ", code='" + code + '\'' +
-        ", emblemUrl='" + emblemUrl + '\'' +
-        ", plan='" + plan + '\'' +
-        ", currentSeason=" + currentSeason +
-        ", numberOfAvailableSeasons=" + numberOfAvailableSeasons +
-        ", lastUpdated='" + lastUpdated + '\'' +
-        '}';
-  }
-
   Season currentSeason;
   int numberOfAvailableSeasons;
   String lastUpdated;
@@ -43,6 +28,22 @@ public class Competition {
 
     String countryCode;
     String ensignUrl;
+  }
+
+
+  @Override
+  public String toString() {
+    return "Competition{" +
+            "id=" + id +
+            ", area=" + area +
+            ", name='" + name + '\'' +
+            ", code='" + code + '\'' +
+            ", emblemUrl='" + emblemUrl + '\'' +
+            ", plan='" + plan + '\'' +
+            ", currentSeason=" + currentSeason +
+            ", numberOfAvailableSeasons=" + numberOfAvailableSeasons +
+            ", lastUpdated='" + lastUpdated + '\'' +
+            '}';
   }
 
   class Season {

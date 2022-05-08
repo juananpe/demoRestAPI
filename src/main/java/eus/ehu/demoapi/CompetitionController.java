@@ -86,6 +86,8 @@ public class CompetitionController {
         cid.setText(String.valueOf(competitions.get(current).id));
         cname.setText(competitions.get(current).name);
 
+        // System.out.println(competitions.get(current));
+
         String emblemUrl = competitions.get(current).emblemUrl;
         System.out.println(emblemUrl);
         if (emblemUrl != null)  System.out.println(emblemUrl.substring(emblemUrl.length() - 3 ));
