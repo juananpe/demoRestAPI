@@ -79,13 +79,6 @@ public class Manager {
     return result;
   }
 
-  public static void main(String[] args) {
-    Manager manager = new Manager();
-    String result = manager.request("competitions");
-    System.out.println(result);
-
-  }
-
   public HashMap<String, String> loadTeamNames() {
     Gson gson = new Gson();
 
