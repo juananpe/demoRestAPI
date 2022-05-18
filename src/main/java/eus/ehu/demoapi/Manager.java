@@ -92,11 +92,11 @@ public class Manager {
     JsonObject jsonObject;
     // if file exists
     try {
-      System.out.println("From cache");
+     // System.out.println("From cache");
       Reader reader = new InputStreamReader(getFileFromResourceAsStream("teams.json"));
       jsonObject = gson.fromJson(reader, JsonObject.class);
     } catch (Exception e) {
-      System.out.println("From HTTPS");
+     // System.out.println("From HTTPS");
       jsonObject = gson.fromJson(request("competitions/2014/teams"), JsonObject.class);
     }
 
@@ -160,5 +160,21 @@ public class Manager {
         .collect(Collectors.toList());
 
     return matchDaysDistinctByName;
+  }
+
+  public static void main(String[] args) {
+    Manager manager = new Manager();
+    String body = manager.request("competitions");
+
+    Gson gson = new Gson();
+    JsonObject jsonObject;
+
+    jsonObject = gson.fromJson(body, JsonObject.class);
+    Type competitionListType = new TypeToken<ArrayList<Competition>>(){}.getType();
+    List<Competition> competitions = gson.fromJson((jsonObject.get("competitions")), competitionListType);
+    System.out.println(competitions.get(0).id);
+    System.out.println(competitions.get(0).area);
+    System.out.println(competitions.get(0).name);
+
   }
 }

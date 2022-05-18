@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 
 import java.net.URL;
@@ -15,34 +16,34 @@ import java.util.ResourceBundle;
 
 public class ClientController {
 
-  @FXML
-  private ResourceBundle resources;
+    @FXML
+    private ResourceBundle resources;
 
-  @FXML
-  private URL location;
+    @FXML
+    private URL location;
 
-  @FXML
-  private ComboBox<MatchDay> comboDates;
+    @FXML
+    private ComboBox<MatchDay> comboDates;
 
 
-  @FXML
-  private TableView<Match> tblMatches;
+    @FXML
+    private TableView<Match> tblMatches;
 
-  @FXML
-  private TableColumn<Match, String> colHome;
+    @FXML
+    private TableColumn<Match, String> colHome;
 
-  @FXML
-  private TableColumn<Match, String> colAway;
+    @FXML
+    private TableColumn<Match, String> colAway;
 
-  @FXML
-  private TableColumn<Match, String> colResult;
+    @FXML
+    private TableColumn<Match, String> colResult;
 
 //  @FXML
 //  private ListView<Match> lstAreaResult;
 
-  private ObservableList<Match> listMatches =  FXCollections.observableArrayList();
+    private ObservableList<Match> listMatches = FXCollections.observableArrayList();
 
-  private ObservableList<MatchDay> listDates = FXCollections.observableArrayList();
+    private ObservableList<MatchDay> listDates = FXCollections.observableArrayList();
 
 //  @FXML
 //  void check(ActionEvent event) {
@@ -50,17 +51,17 @@ public class ClientController {
 //    lstAreaResult.setItems(listMatches);
 //  }
 
-  @FXML
-  void initialize() {
-    
+    @FXML
+    void initialize() {
 
-    List<MatchDay> matchDates = Manager.get().getMatchDates();
-    listDates =  FXCollections.observableArrayList(matchDates);
-    comboDates.setItems(listDates);
 
-    colAway.setCellValueFactory(new PropertyValueFactory<>("awayTeam"));
-    colHome.setCellValueFactory(new PropertyValueFactory<>("homeTeam"));
-    colResult.setCellValueFactory(new PropertyValueFactory<>("score"));
+        List<MatchDay> matchDates = Manager.get().getMatchDates();
+        listDates = FXCollections.observableArrayList(matchDates);
+        comboDates.setItems(listDates);
+
+        colAway.setCellValueFactory(new PropertyValueFactory<>("awayTeam"));
+        colHome.setCellValueFactory(new PropertyValueFactory<>("homeTeam"));
+        colResult.setCellValueFactory(new PropertyValueFactory<>("score"));
 
 //    lstAreaResult.setCellFactory(new Callback<>() {
 //      @Override
@@ -80,33 +81,41 @@ public class ClientController {
 //
 //    });
 
-    // comboMathDays
-    Callback<ListView<MatchDay>, ListCell<MatchDay>> cellFactory = new Callback<>() {
-      @Override
-      public ListCell<MatchDay> call(ListView<MatchDay> l) {
-        return new ListCell<>() {
-          @Override
-          protected void updateItem(MatchDay item, boolean empty) {
-            super.updateItem(item, empty);
-            if (item == null || empty) {
-              setGraphic(null);
-            } else {
-              setText(item.getMatchDay() + "   " + item.getUtcDate().toInstant().toString().split("T")[0]);
+        // comboMathDays
+        Callback<ListView<MatchDay>, ListCell<MatchDay>> cellFactory = new Callback<>() {
+            @Override
+            public ListCell<MatchDay> call(ListView<MatchDay> l) {
+                return new ListCell<>() {
+                    @Override
+                    protected void updateItem(MatchDay item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item == null || empty) {
+                            setGraphic(null);
+                        } else {
+                            setText(item.getMatchDay() + "   " + item.getUtcDate().toInstant().toString().split("T")[0]);
+                        }
+                    }
+                };
             }
-          }
         };
-      }
-    };
 
-    comboDates.setButtonCell(cellFactory.call(null));
-    comboDates.setCellFactory(cellFactory);
+        comboDates.setButtonCell(cellFactory.call(null));
+        comboDates.setCellFactory(cellFactory);
 
-    // when selecting a matchDay, show all the matches for that matchDay
-    comboDates.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
-      System.out.println(newValue);
-      listMatches.setAll(Manager.get().getMatches(newValue));
-      tblMatches.setItems(listMatches);
+        // when selecting a matchDay, show all the matches for that matchDay
+        comboDates.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+            System.out.println(newValue);
+            listMatches.setAll(Manager.get().getMatches(newValue));
+            tblMatches.setItems(listMatches);
 
-    });
-  }
+        });
+
+        tblMatches.setOnMouseClicked((MouseEvent event) -> {
+            if (tblMatches.getSelectionModel().getSelectedItem() != null) {
+                Match match = tblMatches.getSelectionModel().getSelectedItem();
+                System.out.println(match);
+            }
+        });
+
+    }
 }

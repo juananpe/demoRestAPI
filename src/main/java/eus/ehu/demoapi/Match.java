@@ -5,6 +5,8 @@ import java.util.Date;
 
 public class Match {
 
+  Integer id;
+
   Date utcDate;
   String status;
 
@@ -29,7 +31,8 @@ public class Match {
   @Override
   public String toString() {
     return "Match{" +
-        "utcDate=" + utcDate +
+            "id=" + id +
+        ", utcDate=" + utcDate +
         ", status='" + status + '\'' +
         ", homeTeam=" + homeTeam +
         ", awayTeam=" + awayTeam +
@@ -70,6 +73,14 @@ public class Match {
 
   public Integer getMatchday() {
     return matchday;
+  }
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
   }
 
   class Team {
