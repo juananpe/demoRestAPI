@@ -55,11 +55,6 @@ public class Manager {
   }
 
   private String request(String endpoint) {
-    // Interesting endpoints
-    // .url("https://api.football-data.org/v2/competitions/2014/standings")
-    // .url("https://api.football-data.org/v2/competitions/2014/teams")
-    // .url("https://api.football-data.org/v2/competitions/2014")
-    // .url("https://api.football-data.org/v2/competitions")
 
     String result = "";
 
@@ -84,6 +79,12 @@ public class Manager {
     return result;
   }
 
+  public static void main(String[] args) {
+    Manager manager = new Manager();
+    String result = manager.request("competitions");
+    System.out.println(result);
+
+  }
 
   public HashMap<String, String> loadTeamNames() {
     Gson gson = new Gson();
